@@ -38,10 +38,12 @@ const DocumentSpreadChart = () => {
           (doc) => doc.documentId !== "Unknown"
         );
 
-        // Sort the filtered data alphabetically by documentId
-        const sortedResult = filteredResult.sort((a, b) =>
-          a.documentId.localeCompare(b.documentId)
-        );
+        // Sort the filtered data alphabetically by documentId, handling null values
+        const sortedResult = filteredResult.sort((a, b) => {
+          const docA = a.documentId || ""; // Provide fallback empty string for null/undefined
+          const docB = b.documentId || "";
+          return docA.localeCompare(docB);
+        });
 
         // Set the sorted data to state
         setData({
