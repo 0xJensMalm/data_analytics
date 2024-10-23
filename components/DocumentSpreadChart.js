@@ -22,6 +22,7 @@ ChartJS.register(
 
 const DocumentSpreadChart = () => {
   const [data, setData] = useState({ labels: [], counts: [] });
+  const [totalDocuments, setTotalDocuments] = useState(0); // New state for total documents
 
   useEffect(() => {
     const fetchDocumentSpread = async () => {
@@ -34,11 +35,11 @@ const DocumentSpreadChart = () => {
         console.log("Fetched Document Spread:", result);
 
         // Filter out any "Unknown" documents
-        const filteredResult = result.filter(
+        const filteredResult = result.documentSpread.filter(
           (doc) => doc.documentId !== "Unknown"
         );
 
-        // Sort the filtered data alphabetically by documentId, handling null values
+        // Sort the filtered data alphabetically by documentId
         const sortedResult = filteredResult.sort((a, b) => {
           const docA = a.documentId || ""; // Provide fallback empty string for null/undefined
           const docB = b.documentId || "";
@@ -50,6 +51,7 @@ const DocumentSpreadChart = () => {
           labels: sortedResult.map((doc) => doc.documentId),
           counts: sortedResult.map((doc) => doc.count),
         });
+        setTotalDocuments(result.totalDocuments); // Set total documents from API response
       } catch (error) {
         console.error("Error fetching document spread:", error);
       }
@@ -72,10 +74,8 @@ const DocumentSpreadChart = () => {
   return (
     <div>
       <h2>Document Spread</h2>
-      {/* Decrease the chart height, set a max height for the container */}
+      <p>Total Documents: {totalDocuments}</p> {/* Display total documents */}
       <div style={{ height: "200px" }}>
-        {" "}
-        {/* Set the desired chart height */}
         {data.labels.length > 0 ? (
           <Bar data={chartData} options={{ maintainAspectRatio: false }} />
         ) : (

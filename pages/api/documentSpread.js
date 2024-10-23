@@ -1,3 +1,4 @@
+// /pages/api/documentSpread.js
 import clientPromise from "../../lib/mongodb";
 
 export default async function handler(req, res) {
@@ -25,9 +26,11 @@ export default async function handler(req, res) {
       ])
       .toArray();
 
+    const totalDocuments = documentSpread.length; // Total documents is the length of the spread array
+
     console.log("Document Spread Data:", documentSpread); // Log to check data
 
-    res.status(200).json(documentSpread);
+    res.status(200).json({ documentSpread, totalDocuments });
   } catch (error) {
     console.error("Error fetching document spread:", error);
     res.status(500).json({ message: "Error fetching document spread" });
