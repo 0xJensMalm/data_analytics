@@ -31,8 +31,9 @@ const ScoreComparisonScatter = () => {
 
         // Prepare data for the scatter chart
         const scatterData = result.map((entry) => ({
-          x: entry.ageGroup, // Use age directly
+          x: entry.age, // Use age directly
           y: entry.avgScore || 0, // Use the average score
+          label: entry.isTranslated ? "Translated" : "Original", // Differentiate points
         }));
 
         setData(scatterData);
@@ -52,22 +53,28 @@ const ScoreComparisonScatter = () => {
   const scatterChartData = {
     datasets: [
       {
-        label: "Average Score by Age Group",
-        data: data,
+        label: "Original Documents",
+        data: data.filter((point) => !point.label.includes("Translated")),
         backgroundColor: "rgba(75, 192, 192, 0.5)",
+        pointRadius: 5,
+      },
+      {
+        label: "Translated Documents",
+        data: data.filter((point) => point.label.includes("Translated")),
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
         pointRadius: 5,
       },
     ],
   };
 
   const options = {
-    responsive: true, // Make the chart responsive
-    maintainAspectRatio: false, // Disable the aspect ratio to use full height
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         title: {
           display: true,
-          text: "Age Group",
+          text: "Age",
         },
         ticks: {
           autoSkip: false, // Show all tick labels
@@ -79,15 +86,15 @@ const ScoreComparisonScatter = () => {
           display: true,
           text: "Average Score",
         },
-        min: 0, // Set a minimum value for the Y-axis
-        max: 5, // Assuming scores range between 1 and 5
+        min: 0,
+        max: 5,
       },
     },
     plugins: {
       tooltip: {
         callbacks: {
           label: function (tooltipItem) {
-            return `Avg Score: ${tooltipItem.raw.y}`; // Display average score on hover
+            return `Avg Score: ${tooltipItem.raw.y} (${tooltipItem.dataset.label})`; // Display average score and label on hover
           },
         },
       },

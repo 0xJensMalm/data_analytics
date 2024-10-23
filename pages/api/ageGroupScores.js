@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     const client = await clientPromise;
     const db = client.db("questionnaire_db");
 
-    // Group layperson scores by age group
+    // Group layperson scores by age group and document type
     const ageGroupScores = await db
       .collection("responses")
       .aggregate([
@@ -15,14 +15,18 @@ export default async function handler(req, res) {
         { $unwind: "$documents.answers" },
         {
           $group: {
-            _id: "$age", // Group by age directly
+            _id: {
+              age: "$age", // Group by age
+              isTranslated: "$documents.isTranslated", // Group by translation status
+            },
             avgScore: { $avg: "$documents.answers.rating" }, // Calculate average score
           },
         },
         {
           $project: {
             _id: 0,
-            ageGroup: "$_id", // Return age group
+            age: "$_id.age", // Return age group
+            isTranslated: "$_id.isTranslated", // Include translation status
             avgScore: "$avgScore", // Include average score in output
           },
         },
