@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "chart.js": "^4.4.5",
+    "dotenv": "^16.4.5",
+    "mongodb": "^6.10.0",
     "mongoose": "^8.7.1",
     "next": "14.2.15",
     "react": "^18",

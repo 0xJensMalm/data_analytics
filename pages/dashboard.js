@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import ScoreComparison from "../components/ScoreComparison";
 import DocumentSpreadChart from "../components/DocumentSpreadChart";
-import ScoreComparisonScatter from "../components/ScoreComparisonScatter"; // New scatterplot component
-import AgeGroupBarChart from "../components/AgeGroupBarChart"; // New bar chart component
+import ScoreComparisonScatter from "../components/ScoreComparisonScatter";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("layman");
@@ -86,9 +85,7 @@ const Dashboard = () => {
 
         {/* Analysis 1: Layperson vs. Expert Score Comparison */}
         <ScoreComparisonScatter />
-
-        {/* Analysis 4: Understandability by Age Group */}
-        <AgeGroupBarChart />
+        {/* Remove AgeGroupBarChart reference */}
       </div>
     </div>
   );

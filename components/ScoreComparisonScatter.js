@@ -10,7 +10,7 @@ import {
   Legend,
 } from "chart.js";
 
-// Register Chart.js components including PointElement
+// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -26,13 +26,16 @@ const ScoreComparisonScatter = () => {
   useEffect(() => {
     const fetchScores = async () => {
       try {
-        const response = await fetch("/api/compareScores");
+        const response = await fetch("/api/ageGroupScores");
         const result = await response.json();
 
-        // Log the result to check if data is coming in
-        console.log("Fetched Score Comparison Data:", result);
+        // Prepare data for the scatter chart
+        const scatterData = result.map((entry) => ({
+          x: entry.ageGroup, // Use age directly
+          y: entry.avgScore || 0, // Use the average score
+        }));
 
-        setData(result);
+        setData(scatterData);
       } catch (error) {
         console.error("Error fetching comparison scores:", error);
       }
@@ -46,42 +49,55 @@ const ScoreComparisonScatter = () => {
     return <p>No data available for score comparison.</p>;
   }
 
-  const scatterData = {
+  const scatterChartData = {
     datasets: [
       {
-        label: "Layperson vs. Expert Scores",
-        data: data.map((doc) => ({
-          x: doc.avgExpertScore || 0, // Provide fallback if no expert score
-          y: doc.avgLaymanScore || 0, // Provide fallback if no layman score
-        })),
+        label: "Average Score by Age Group",
+        data: data,
         backgroundColor: "rgba(75, 192, 192, 0.5)",
+        pointRadius: 5,
       },
     ],
   };
 
   const options = {
+    responsive: true, // Make the chart responsive
+    maintainAspectRatio: false, // Disable the aspect ratio to use full height
     scales: {
       x: {
         title: {
           display: true,
-          text: "Expert Score (Accuracy)",
+          text: "Age Group",
+        },
+        ticks: {
+          autoSkip: false, // Show all tick labels
+          maxRotation: 0, // Prevent rotation of labels
         },
       },
       y: {
         title: {
           display: true,
-          text: "Layperson Score (Understandability)",
+          text: "Average Score",
+        },
+        min: 0, // Set a minimum value for the Y-axis
+        max: 5, // Assuming scores range between 1 and 5
+      },
+    },
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: function (tooltipItem) {
+            return `Avg Score: ${tooltipItem.raw.y}`; // Display average score on hover
+          },
         },
       },
     },
   };
 
   return (
-    <div style={{ height: "400px", overflow: "hidden" }}>
-      {" "}
-      {/* Limit vertical expansion */}
-      <h2>Layperson vs. Expert Score Comparison</h2>
-      <Scatter data={scatterData} options={options} />
+    <div style={{ height: "400px", width: "100%" }}>
+      <h2>Average Score by Age Group</h2>
+      <Scatter data={scatterChartData} options={options} />
     </div>
   );
 };

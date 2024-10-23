@@ -10,28 +10,30 @@ export default async function handler(req, res) {
     const ageGroupScores = await db
       .collection("responses")
       .aggregate([
-        { $match: { userId: { $regex: "^l" } } },
+        { $match: { userId: { $regex: "^l" } } }, // Only include layman responses
         { $unwind: "$documents" },
         { $unwind: "$documents.answers" },
         {
           $group: {
-            _id: "$user.ageGroup", // Assuming ageGroup is available in user document
-            avgScore: { $avg: "$documents.answers.rating" },
+            _id: "$age", // Group by age directly
+            avgScore: { $avg: "$documents.answers.rating" }, // Calculate average score
           },
         },
         {
           $project: {
             _id: 0,
-            ageGroup: "$_id",
-            avgScore: "$avgScore",
+            ageGroup: "$_id", // Return age group
+            avgScore: "$avgScore", // Include average score in output
           },
         },
       ])
       .toArray();
 
-    res.status(200).json(ageGroupScores);
+    console.log("Age Group Scores:", ageGroupScores); // Log the grouped results
+
+    res.status(200).json(ageGroupScores); // Send response
   } catch (error) {
     console.error("Error fetching age group scores:", error);
-    res.status(500).json({ message: "Error fetching age group scores" });
+    res.status(500).json({ message: "Error fetching age group scores" }); // Error handling
   }
 }
