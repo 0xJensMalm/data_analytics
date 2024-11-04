@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb");
 
 // MongoDB connection details
 const username = "jensmalm"; // Your MongoDB username
-const password = encodeURIComponent("pw"); // Replace with your actual password
+const password = encodeURIComponent("Tifrastina7523"); // Replace with your actual password
 const clusterUrl = "cluster0.wyofq.mongodb.net"; // Your MongoDB cluster URL
 const databaseName = "questionnaire_db"; // Your database name
 const collectionName = "responses"; // Your collection name

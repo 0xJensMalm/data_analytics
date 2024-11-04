@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import ScoreComparison from "../components/ScoreComparison";
 import DocumentSpreadChart from "../components/DocumentSpreadChart";
 import ScoreComparisonScatter from "../components/ScoreComparisonScatter";
+import DemographicsAnalysis from "../components/DemographicsAnalysis";
+import RatingComparisonChart from "../components/RatingComparisonChart";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("layman");
@@ -32,11 +34,14 @@ const Dashboard = () => {
     fetchStatistics();
   }, []);
 
+  // In pages/dashboard.js
   return (
     <div style={{ padding: "20px", backgroundColor: "#f8f9fa" }}>
       <h1 style={{ fontSize: "24px", fontWeight: "bold" }}>
         Statistics Dashboard
       </h1>
+
+      {/* Top Section: General Info and Document Spread */}
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         {/* Left Side: General Info - 30% width */}
         <div style={{ width: "30%", padding: "10px" }}>
@@ -71,6 +76,7 @@ const Dashboard = () => {
         </div>
       </div>
 
+      {/* Score Comparison Section */}
       <div style={{ marginTop: "20px" }}>
         {activeTab === "layman" && (
           <div style={{ height: "60%" }}>
@@ -79,13 +85,32 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* New Section for Layperson vs. Expert Score Comparison and Age Group Analysis */}
+      {/* Demographics Section */}
       <div style={{ marginTop: "40px" }}>
-        <h2>Additional Analyses</h2>
+        <h2>Participant Demographics</h2>
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+            marginBottom: "40px",
+          }}
+        >
+          <div style={{ flex: 1 }}>
+            <DemographicsAnalysis />
+          </div>
+        </div>
+      </div>
 
-        {/* Analysis 1: Layperson vs. Expert Score Comparison */}
+      {/* Expert vs Laymen comparison */}
+      <div style={{ marginTop: "40px" }}>
+        <h2>Ekspert vs lekfolk sammenligning</h2>
+        <RatingComparisonChart />
+      </div>
+
+      {/* Age Group Analysis Section */}
+      <div style={{ marginTop: "40px" }}>
+        <h2>Score Analysis by Age</h2>
         <ScoreComparisonScatter />
-        {/* Remove AgeGroupBarChart reference */}
       </div>
     </div>
   );

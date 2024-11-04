@@ -73,8 +73,9 @@ const DocumentSpreadChart = () => {
 
   return (
     <div>
-      <h2>Document Spread</h2>
-      <p>Total Documents: {totalDocuments}</p> {/* Display total documents */}
+      <h2>Dokument spredning</h2>
+      <p>Totalt antall dokumenter: {totalDocuments}</p>{" "}
+      {/* Display total documents */}
       <div style={{ height: "200px" }}>
         {data.labels.length > 0 ? (
           <Bar data={chartData} options={{ maintainAspectRatio: false }} />

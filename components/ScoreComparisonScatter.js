@@ -103,7 +103,7 @@ const ScoreComparisonScatter = () => {
 
   return (
     <div style={{ height: "400px", width: "100%" }}>
-      <h2>Average Score by Age Group</h2>
+      <h2>Gjennomsnittscore basert på alder</h2>
       <Scatter data={scatterChartData} options={options} />
     </div>
   );

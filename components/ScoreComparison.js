@@ -62,7 +62,7 @@ const ScoreComparison = () => {
 
   return (
     <div>
-      <h2>Layman Score Comparison</h2>
+      <h2>Lekfolk sammenligning</h2>
       {/* Set the height of the chart to 60% of the original */}
       <div style={{ height: "300px" }}>
         <Bar data={laymanChartData} options={{ maintainAspectRatio: false }} />
